@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:update, :show, :destroy, :update_stock_item]
+  before_action :set_product, only: [:update, :show, :destroy, :update_stock_item, :by_store]
 
   def create
     @product = Product.new(product_attributes)
