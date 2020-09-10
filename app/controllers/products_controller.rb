@@ -1,0 +1,50 @@
+class ProductsController < ApplicationController
+  before_action :set_product, only: [:update, :show, :destroy]
+
+  def create
+    @product = Product.new(product_attributes)
+    begin
+      if @product.save
+        render json: @product.attributes, status: 201
+      else
+        render json: @product.errors, status: 400
+      end
+    rescue => exception
+      render json: {message: exception.message}, status: 500
+    end
+  end
+
+  def update
+    begin
+      if @product.update(product_attributes)
+        render json: @product.attributes, status: 200
+      else
+        render json: @product.errors, status: 400
+      end
+    rescue => exception
+      render json: {message: exception.message}, status: 500
+    end
+  end
+
+  def show
+    render json: @product.attributes, status: 200
+  end
+
+  def destroy
+    begin
+      @product.destroy!
+      head :no_content
+    rescue => exception
+      render json: {message: exception.message}, status: 500
+    end
+  end
+
+  protected
+    def set_product
+      @product = Product.find(params[:id])
+    end
+
+    def product_attributes
+      params.require(:product).permit(:name, :price)
+    end
+end

@@ -43,3 +43,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Custom gems
 gem 'rspec-rails'
 gem 'faker'
+gem 'simplecov'
