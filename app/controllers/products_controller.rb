@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
     @product = Product.new(product_attributes)
     begin
       if @product.save
-        render json: @product.attributes, status: 201
+        render json: @product, status: 201
       else
         render json: @product.errors, status: 400
       end
@@ -17,7 +17,7 @@ class ProductsController < ApplicationController
   def update
     begin
       if @product.update(product_attributes)
-        render json: @product.attributes, status: 200
+        render json: @product, status: 200
       else
         render json: @product.errors, status: 400
       end
@@ -27,7 +27,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    render json: @product.attributes, status: 200
+    render json: @product, status: 200
   end
 
   def destroy
@@ -39,10 +39,19 @@ class ProductsController < ApplicationController
     end
   end
 
+  def by_store
+    @product.store_id = params[:store_id]
+    begin
+      render json: @product.as_json(methods: :total_of_stock), status: 200
+    rescue => exception
+      render json: {message: exception.message}, status: 500
+    end
+  end
+
   def update_stock_item
     begin
       if @product.update_stock_item(stock_item_attributes)
-        render json: @product.attributes, status: 200
+        render json: @product.as_json(methods: :total_of_stock), status: 200
       else
         render json: @product.errors, status: 400
       end

@@ -5,7 +5,7 @@ class StoresController < ApplicationController
     @store = Store.new(store_attributes)
     begin
       if @store.save
-        render json: @store.attributes, status: 201
+        render json: @store.as_json, status: 201
       else
         render json: @store.errors, status: 400
       end
@@ -17,7 +17,7 @@ class StoresController < ApplicationController
   def update
     begin
       if @store.update(store_attributes)
-        render json: @store.attributes, status: 200
+        render json: @store.as_json, status: 200
       else
         render json: @store.errors, status: 400
       end
@@ -27,7 +27,7 @@ class StoresController < ApplicationController
   end
 
   def show
-    render json: @store.attributes, status: 200
+    render json: @store.as_json, status: 200
   end
 
   def destroy

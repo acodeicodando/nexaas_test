@@ -50,6 +50,8 @@ RSpec.describe "Products", type: :request do
       it "returns http success" do
         put update_stock_item_product_path(@product), params: { product: { store_id: @store.id, value: 30 }}
         expect(response).to have_http_status(:success)
+        body = JSON.parse(response.body)
+        expect(body['total_of_stock']).to eql(30)
         expect(@product.stock_for(@store.id)).to eql(30)
       end
     end
