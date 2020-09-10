@@ -54,3 +54,7 @@ git push origin issues/short-description-of-issue
 git pull origin master
 git push heroku master
 ```
+
+## Routing system
+
+* The route system for api it's very simple. You will have the endpoints: **products** and **stores**
