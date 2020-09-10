@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:update, :show, :destroy]
+  before_action :set_product, only: [:update, :show, :destroy, :update_stock_item]
 
   def create
     @product = Product.new(product_attributes)
@@ -39,6 +39,18 @@ class ProductsController < ApplicationController
     end
   end
 
+  def update_stock_item
+    begin
+      if @product.update_stock_item(stock_item_attributes)
+        render json: @product.attributes, status: 200
+      else
+        render json: @product.errors, status: 400
+      end
+    rescue => exception
+      render json: {message: exception.message}, status: 500
+    end
+  end
+
   protected
     def set_product
       @product = Product.find(params[:id])
@@ -46,5 +58,9 @@ class ProductsController < ApplicationController
 
     def product_attributes
       params.require(:product).permit(:name, :price)
+    end
+
+    def stock_item_attributes
+      params.require(:product).permit(:store_id, :value)
     end
 end

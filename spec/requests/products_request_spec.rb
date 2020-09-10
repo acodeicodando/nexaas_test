@@ -34,13 +34,26 @@ RSpec.describe "Products", type: :request do
       end
     end
   
-    describe "GET /destroy" do
+    describe "Destroy product" do
       it "returns http success" do
         delete product_path(@product)
         expect(response).to have_http_status(:success)
         expect(response.code).to eql('204')
       end
     end
+
+    describe "Update stock item of product in store" do
+      before do
+        @store = create(:store)
+      end
+      
+      it "returns http success" do
+        put update_stock_item_product_path(@product), params: { product: { store_id: @store.id, value: 30 }}
+        expect(response).to have_http_status(:success)
+        expect(@product.stock_for(@store.id)).to eql(30)
+      end
+    end
+    
   end
 
 end
